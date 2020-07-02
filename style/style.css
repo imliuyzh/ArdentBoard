@@ -1,7 +1,11 @@
 body
 {
 	margin: 0;
-	padding: 0;
+	width: 100vw;
+	height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #control
@@ -9,8 +13,8 @@ body
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	margin: 2.3em 0 0;
-	padding: 0;
+	margin: 0;
+	gap: 8em;
 }
 
 #pen-eraser-control
@@ -18,7 +22,7 @@ body
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 0.3em;
+	gap: 0.2em;
 }
 
 .input-button
@@ -58,7 +62,7 @@ body
 #whiteboard
 {
 	display: block;
-	margin: 2.3em auto 0;
+	margin: 2.3em auto auto;
 	padding: 0;
 	border-width: 1px;
 	border-style: dashed;

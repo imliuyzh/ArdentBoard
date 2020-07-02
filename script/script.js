@@ -28,6 +28,42 @@ function revertColor(event)
 }
 
 /*
+ * Change the size of the whiteboard as the users resizing the browser.
+ */
+function resizeWhiteboard()
+{
+	let whiteboard = document.querySelector("#whiteboard");
+	whiteboard.width = 0.9 * window.innerWidth;
+	whiteboard.height = 0.78 * window.innerHeight;
+}
+
+/*
+ */
+function draw(event)
+{
+	
+}
+
+/*
+ */
+function erase(event)
+{
+	
+}
+
+/*
+ * Clear everything on the whiteboard.
+ * @param event an event detailing the state of the webpage
+ * when the users press the clear button
+ */
+function clearAll(event)
+{
+	let whiteboard = document.querySelector("#whiteboard"),
+		ctx = whiteboard.getContext("2d");
+	ctx.clearRect(0, 0, whiteboard.width, whiteboard.height);
+}
+
+/*
  * A "main" function for registering event listeners for all buttons
  * and initializing whatever the webpage needs.
  */
@@ -38,6 +74,17 @@ function main()
 		element.addEventListener("mouseover", changeColor);
 		element.addEventListener("mouseleave", revertColor);
 	});
+	resizeWhiteboard()
+	window.addEventListener("resize", resizeWhiteboard);
+	
+	let pen = document.querySelector("#pen");
+	pen.addEventListener("click", draw);
+	
+	let eraser = document.querySelector("#eraser");
+	eraser.addEventListener("click", erase);
+	
+	let clearButton = document.querySelector("#reset");
+	clearButton.addEventListener("click", clearAll);
 }
 
 

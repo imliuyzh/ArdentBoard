@@ -1,6 +1,7 @@
 body
 {
 	margin: 0;
+	padding: 0;
 }
 
 #control
@@ -8,7 +9,8 @@ body
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	margin-top: 2.5em;
+	margin: 2.3em 0 0;
+	padding: 0;
 }
 
 #pen-eraser-control
@@ -24,6 +26,7 @@ body
 	border-radius: 100%;
 	border-color: black;
 	border-width: 0.1em;
+	border-style: dashed;
 	outline: none;
 	background: none;
 	height: 3.5em;
@@ -54,5 +57,9 @@ body
 
 #whiteboard
 {
-	
+	display: block;
+	margin: 2.3em auto 0;
+	padding: 0;
+	border-width: 1px;
+	border-style: dashed;
 }

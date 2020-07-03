@@ -76,7 +76,7 @@ class Utilities
 		Utilities.drawing = (event.type === "mousedown") ? true
 			: (event.type === "mouseup") ? false : Utilities.drawing;
 		let color = (document.querySelector("#whiteboard").style.cursor === "crosshair")
-				? document.querySelector("#color-picker").value : "#ffffff",
+				? document.querySelector("#color-picker").value : "rgba(255, 255, 255, 0)",
 			whiteboard = document.querySelector("#whiteboard"),
 			whiteboardInfo = whiteboard.getBoundingClientRect(),
 			context = whiteboard.getContext("2d");
@@ -105,22 +105,32 @@ class Utilities
 		whiteboard.getContext("2d").clearRect(
 			0, 0, whiteboard.width, whiteboard.height);
 	}
-	
+
 	/*
-	 * Enable the grid on the whiteboard when the option is selected
-	 * and vice versa
-	 * @param event an event detailing the state of the webpage
-	 * when the users press the option
+	 * Draw the grid on the whiteboard.
 	 */
-	static manageGrid(event)
+	/*static displayGrid()
 	{
-		if (event.srcElement.checked)
+		let whiteboard = document.querySelector("#whiteboard"),
+			gridCanvas = document.querySelector("#grid-canvas"),
+			context = gridCanvas.getContext("2d");
+
+		[gridCanvas.borderStyle, gridCanvas.id] = ["none", "grid-canvas"];
+		[gridCanvas.width, gridCanvas.height] = [whiteboard.width, whiteboard.height];
+		[context.lineWidth, context.strokeStyle] = ["0.01em", "#e8e8e8"];
+		for (let counter = 0; counter < whiteboard.width; counter += 10)
 		{
+			context.moveTo(counter, 0);
+			context.lineTo(counter, whiteboard.height);
+			context.stroke();
 		}
-		else
+		for (let counter = 0; counter < whiteboard.height; counter += 10)
 		{
+			context.moveTo(0, counter);
+			context.lineTo(whiteboard.width, counter);
+			context.stroke();
 		}
-	}
+	}*/
 }
 
 /*
@@ -139,10 +149,8 @@ function main()
 	// Add a listener to change the type of input when users click the
 	// pen/eraser button
 	document.querySelectorAll("#pen, #eraser")
-			.forEach((inputButton) => inputButton.addEventListener("click", Utilities.changeInputState))
-
-	// Add a listener to enable/disable the grid
-	document.querySelector("#grid").addEventListener("click", Utilities.manageGrid);
+			.forEach((inputButton) => inputButton.addEventListener(
+				"click", Utilities.changeInputState));
 	
 	// Add a listener to erase everything on the whiteboard when users click
 	// on the clear button

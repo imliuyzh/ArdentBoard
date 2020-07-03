@@ -1,21 +1,21 @@
 body
 {
-	margin: 0;
-	width: 100vw;
-	height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 	font-family: "Segoe UI", sans-serif;
+	margin: 0;
+	width: 100vw;
+	height: 100vh;
 }
 
 #control
 {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	align-items: center;
 	margin: 0;
-	gap: 20em;
+	gap: 25em;
 }
 
 #range-reset-control, #pen-eraser-grid-control
@@ -64,6 +64,6 @@ body
 	display: block;
 	margin: 2.3em auto auto;
 	padding: 0;
-	border-width: 1px;
-	border-style: dashed;
+	background-image: url("../img/grid.png");
+	background-repeat: repeat;
 }

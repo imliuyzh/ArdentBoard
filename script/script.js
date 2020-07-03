@@ -76,13 +76,16 @@ class Utilities
 		Utilities.drawing = (event.type === "mousedown") ? true
 			: (event.type === "mouseup") ? false : Utilities.drawing;
 		let color = (document.querySelector("#whiteboard").style.cursor === "crosshair")
-				? document.querySelector("#color-picker").value : "rgba(255, 255, 255, 0)",
+				? document.querySelector("#color-picker").value : "rgba(0, 0, 0, 1)",
 			whiteboard = document.querySelector("#whiteboard"),
 			whiteboardInfo = whiteboard.getBoundingClientRect(),
 			context = whiteboard.getContext("2d");
 			
 		if (event.type !== "mouseup" && Utilities.drawing === true)
 		{
+			context.globalCompositeOperation =
+				(document.querySelector("#whiteboard").style.cursor === "crosshair")
+					? "source-over" : "destination-out";
 			context.lineWidth = document.querySelector("#thickness").value;
 			context.strokeStyle = color;
 			context.lineTo(event.x-whiteboardInfo.left, event.y-whiteboardInfo.top);
@@ -95,42 +98,40 @@ class Utilities
 	}
 	
 	/*
+	 * Show the grid when the grid option is selected
+	 * @param event an event detailing the state of the webpage
+	 * when the users click on the grid option
+	 */
+	static displayGrid(event)
+	{
+		let whiteboard = document.querySelector("#whiteboard");
+		if (event.srcElement.checked)
+		{
+			whiteboard.style.backgroundImage = "url('img/grid.jpg')";
+			whiteboard.style.backgroundRepeat = "repeat";
+			whiteboard.style.borderStyle = "none";
+			whiteboard.style.borderWidth = "none";
+		}
+		else
+		{
+			whiteboard.style.backgroundImage = "";
+			whiteboard.style.backgroundRepeat = "";
+			whiteboard.style.borderStyle = "dashed";
+			whiteboard.style.borderWidth = "1px";
+		}
+	}
+	
+	/*
 	 * Clear everything on the whiteboard
 	 * @param event an event detailing the state of the webpage
 	 * when the users press the clear button
 	 */
 	static clearAll(event)
 	{
-		let whiteboard = document.querySelector("#whiteboard");
-		whiteboard.getContext("2d").clearRect(
-			0, 0, whiteboard.width, whiteboard.height);
+		document.querySelector("#whiteboard")
+				.getContext("2d")
+				.clearRect(0, 0, whiteboard.width, whiteboard.height);
 	}
-
-	/*
-	 * Draw the grid on the whiteboard.
-	 */
-	/*static displayGrid()
-	{
-		let whiteboard = document.querySelector("#whiteboard"),
-			gridCanvas = document.querySelector("#grid-canvas"),
-			context = gridCanvas.getContext("2d");
-
-		[gridCanvas.borderStyle, gridCanvas.id] = ["none", "grid-canvas"];
-		[gridCanvas.width, gridCanvas.height] = [whiteboard.width, whiteboard.height];
-		[context.lineWidth, context.strokeStyle] = ["0.01em", "#e8e8e8"];
-		for (let counter = 0; counter < whiteboard.width; counter += 10)
-		{
-			context.moveTo(counter, 0);
-			context.lineTo(counter, whiteboard.height);
-			context.stroke();
-		}
-		for (let counter = 0; counter < whiteboard.height; counter += 10)
-		{
-			context.moveTo(0, counter);
-			context.lineTo(whiteboard.width, counter);
-			context.stroke();
-		}
-	}*/
 }
 
 /*
@@ -139,18 +140,21 @@ class Utilities
  */
 function main()
 {
-	// Change the color of the icon to the one in the color panel when 
-	// users move to it
+	// Add listeners to change the color of the icons to the one in the
+	// color panel when users move to them
 	document.querySelectorAll(".input-button, #reset").forEach((element) => {
 		element.addEventListener("mouseover", Utilities.changeColor);
 		element.addEventListener("mouseleave", Utilities.revertColor);
 	});
 
-	// Add a listener to change the type of input when users click the
+	// Add listeners to change the type of input when users click the
 	// pen/eraser button
 	document.querySelectorAll("#pen, #eraser")
 			.forEach((inputButton) => inputButton.addEventListener(
 				"click", Utilities.changeInputState));
+
+	// Add a listener so that the grid can be displayed when the option is clicked
+	document.querySelector("#grid").addEventListener("click", Utilities.displayGrid);
 	
 	// Add a listener to erase everything on the whiteboard when users click
 	// on the clear button
@@ -165,7 +169,7 @@ function main()
 	// Change the cursor style on the whiteboard
 	whiteboard.style.cursor = "crosshair";
 	
-	// Resize the whiteboard as the browser window changes
+	// Add a listener to resize the whiteboard as the browser window changes
 	window.addEventListener("resize", Utilities.resizeWhiteboard);
 	Utilities.resizeWhiteboard();
 }

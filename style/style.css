@@ -64,6 +64,6 @@ body
 	display: block;
 	margin: 2.3em auto auto;
 	padding: 0;
-	background-image: url("../img/grid.png");
-	background-repeat: repeat;
+	border-style: dashed;
+	border-width: 1px;
 }

@@ -2,7 +2,7 @@
  * A class for all the operations used in this web application
  * 
  * @note I was going to put it in a separate JS module; however,
- * Chromium-based browsers will not run because their cross-domain
+ * Chromium-based browsers will refuse to run because their cross-domain
  * policies do not allow JS modules to be referenced as local files
  * unless they are run as a web server
  */
@@ -49,9 +49,7 @@ class Utilities
 	{
 		event.srcElement.style.transform = "scale(1)";
 		event.srcElement.style.color = "#000000";
-		
-		let icons = document.querySelectorAll(".las");
-		icons.forEach((icon) => icon.style.color = "#000000")
+		document.querySelectorAll(".las").forEach((icon) => icon.style.color = "#000000");
 	}
 	
 	/*
@@ -68,7 +66,8 @@ class Utilities
 	}
 	
 	/*
-	 * Refer to the appropriate action when the users click on the whiteboard
+	 * Draw/erase the scribbles on the whiteboard when the users click
+	 * on the whiteboard
 	 * @param event an event detailing the state of the webpage
 	 * when the users click on the whiteboard
 	 */
@@ -77,9 +76,8 @@ class Utilities
 		Utilities.drawing = (event.type === "mousedown") ? true
 			: (event.type === "mouseup") ? false : Utilities.drawing;
 		let color = (document.querySelector("#whiteboard").style.cursor === "crosshair")
-			? document.querySelector("#color-picker").value : "white";
-		
-		let whiteboard = document.querySelector("#whiteboard"),
+				? document.querySelector("#color-picker").value : "#ffffff",
+			whiteboard = document.querySelector("#whiteboard"),
 			whiteboardInfo = whiteboard.getBoundingClientRect(),
 			context = whiteboard.getContext("2d");
 			
@@ -103,9 +101,25 @@ class Utilities
 	 */
 	static clearAll(event)
 	{
-		let whiteboard = document.querySelector("#whiteboard"),
-			ctx = whiteboard.getContext("2d");
-		ctx.clearRect(0, 0, whiteboard.width, whiteboard.height);
+		let whiteboard = document.querySelector("#whiteboard");
+		whiteboard.getContext("2d").clearRect(
+			0, 0, whiteboard.width, whiteboard.height);
+	}
+	
+	/*
+	 * Enable the grid on the whiteboard when the option is selected
+	 * and vice versa
+	 * @param event an event detailing the state of the webpage
+	 * when the users press the option
+	 */
+	static manageGrid(event)
+	{
+		if (event.srcElement.checked)
+		{
+		}
+		else
+		{
+		}
 	}
 }
 
@@ -117,22 +131,24 @@ function main()
 {
 	// Change the color of the icon to the one in the color panel when 
 	// users move to it
-	let elements = document.querySelectorAll(".input-button, #reset");
-	elements.forEach((element) => {
+	document.querySelectorAll(".input-button, #reset").forEach((element) => {
 		element.addEventListener("mouseover", Utilities.changeColor);
 		element.addEventListener("mouseleave", Utilities.revertColor);
 	});
 
-	// Change the type of input when users click the pen/eraser button
+	// Add a listener to change the type of input when users click the
+	// pen/eraser button
 	document.querySelectorAll("#pen, #eraser")
-			.forEach((inputButton) => 
-				inputButton.addEventListener("click", Utilities.changeInputState))
+			.forEach((inputButton) => inputButton.addEventListener("click", Utilities.changeInputState))
+
+	// Add a listener to enable/disable the grid
+	document.querySelector("#grid").addEventListener("click", Utilities.manageGrid);
 	
-	// Erase everything on the whiteboard when users click on the clear button
-	let clearButton = document.querySelector("#reset");
-	clearButton.addEventListener("click", Utilities.clearAll);
+	// Add a listener to erase everything on the whiteboard when users click
+	// on the clear button
+	document.querySelector("#reset").addEventListener("click", Utilities.clearAll);
 	
-	// React to the users when they click on the whiteboard
+	// Add listeners to react to the users when they click on the whiteboard
 	let whiteboard = document.querySelector("#whiteboard");
 	whiteboard.addEventListener("mouseup", Utilities.drawOrErase);
 	whiteboard.addEventListener("mousedown", Utilities.drawOrErase);

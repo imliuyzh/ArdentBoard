@@ -5,26 +5,30 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		
 		<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-		<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 		<link href="style/style.css" type="text/css" rel="stylesheet">
 	</head>
 	
 	<body>
 		<div>
 			<menu id="control">
-				<button class="reset-button" id="reset">Clear</button>
-				
-				<div id="pen-eraser-control">
+				<div id="range-reset-control">
 					<input type="range" id="thickness" min="1" max="50" step="1">
+					<button class="reset-button" id="reset">Clear</button>
+				</div>
+				
+				<div id="pen-eraser-grid-control">
 					<input type="color" id="color-picker" value="#000000">
 					
 					<button class="input-button" id="pen">
 						<i class="las la-pencil-alt la-2x" id="pen-icon"></i>
 					</button>
-				
+					
 					<button class="input-button" id="eraser">
 						<i class="las la-eraser la-2x" id="eraser-icon"></i>
 					</button>
+					
+					<input type="checkbox" id="grid" name="grid">
+					<label for="grid">Grid</label>
 				</div>
 			</menu>
 			<canvas id="whiteboard"></canvas>

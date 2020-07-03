@@ -6,6 +6,7 @@ body
     display: flex;
     justify-content: center;
     align-items: center;
+	font-family: "Segoe UI", sans-serif;
 }
 
 #control
@@ -14,10 +15,10 @@ body
 	justify-content: space-around;
 	align-items: center;
 	margin: 0;
-	gap: 8em;
+	gap: 20em;
 }
 
-#pen-eraser-control
+#range-reset-control, #pen-eraser-grid-control
 {
 	display: flex;
 	justify-content: center;
@@ -42,8 +43,8 @@ body
 	border-radius: 100%;
 	border-style: none;
 	outline-style: none;
-	height: 1.8em;
-	width: 1.8em;
+	height: 1.5em;
+	width: 1.5em;
 	background: none;
 }
 
@@ -52,11 +53,10 @@ body
 	border-color: black;
 	border-width: 0.1em;
 	outline-style: none;
-	font-family: "Open Sans", "Segoe UI", sans-serif;
-	font-size: 1em;
 	height: 2em;
 	width: 5em;
 	background: none;
+	font-size: 0.8em;
 }
 
 #whiteboard

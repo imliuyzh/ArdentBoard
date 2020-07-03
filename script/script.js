@@ -8,9 +8,9 @@
  */
 class Utilities
 {
-	// A variable to decide whether the browser should draw shapes
+	// A variable to decide whether the browser should the users can scribble
 	// on the whiteboard
-	static drawing = false;
+	static drawingAllowed = false;
 	
 	/*
 	 * Change the cursor of the whiteboard to "crosshair" or "cell" depending
@@ -18,7 +18,7 @@ class Utilities
 	 * @param event an event detailing the state of the webpage
 	 * when the users click the pen/eraser icon
 	 */
-	static changeInputState(event)
+	static changeCursor(event)
 	{
 		document.querySelector("#whiteboard").style.cursor =
 			(event.srcElement.id === "pen-icon" || event.srcElement.id === "pen")
@@ -33,10 +33,7 @@ class Utilities
 	 */
 	static changeColor(event)
 	{
-		const COLOR = document.querySelector("#color-picker").value;
-		event.srcElement.style.color = COLOR;
-		event.srcElement.style.transition = "all 0.3s";
-		event.srcElement.style.transform = "scale(1.1)";
+		event.srcElement.style.color = document.querySelector("#color-picker").value;
 	}
 	
 	/*
@@ -47,7 +44,6 @@ class Utilities
 	 */
 	static revertColor(event)
 	{
-		event.srcElement.style.transform = "scale(1)";
 		event.srcElement.style.color = "#000000";
 		document.querySelectorAll(".las").forEach((icon) => icon.style.color = "#000000");
 	}
@@ -64,37 +60,57 @@ class Utilities
 		whiteboard.height = 0.8 * window.innerHeight;
 		context.putImageData(data, 0, 0);
 	}
-	
+
 	/*
-	 * Draw/erase the scribbles on the whiteboard when the users click
-	 * on the whiteboard
+	 * Draw/erase the scribbles on the whiteboard
 	 * @param event an event detailing the state of the webpage
 	 * when the users click on the whiteboard
 	 */
 	static drawOrErase(event)
 	{
-		Utilities.drawing = (event.type === "mousedown") ? true
-			: (event.type === "mouseup") ? false : Utilities.drawing;
 		let color = (document.querySelector("#whiteboard").style.cursor === "crosshair")
-				? document.querySelector("#color-picker").value : "rgba(0, 0, 0, 1)",
+				? document.querySelector("#color-picker").value
+				: "rgba(0, 0, 0, 1)",
 			whiteboard = document.querySelector("#whiteboard"),
 			whiteboardInfo = whiteboard.getBoundingClientRect(),
 			context = whiteboard.getContext("2d");
 			
-		if (event.type !== "mouseup" && Utilities.drawing === true)
+		if (Utilities.drawingAllowed)
 		{
 			context.globalCompositeOperation =
 				(document.querySelector("#whiteboard").style.cursor === "crosshair")
-					? "source-over" : "destination-out";
+					? "source-over"
+					: "destination-out";
 			context.lineWidth = document.querySelector("#thickness").value;
 			context.strokeStyle = color;
+			context.lineJoin = "round";
 			context.lineTo(event.x-whiteboardInfo.left, event.y-whiteboardInfo.top);
 			context.stroke();
 		}
-		else
-		{
-			context.beginPath();
-		}
+	}
+
+	/*
+	 * Handle the event on the whiteboard when the mouse is
+	 * pressed on the whiteboard
+	 * @param event an event detailing the state of the webpage
+	 * when the users press the mouse on the whiteboard
+	 */
+	static mouseDownWhiteboard(event)
+	{
+		Utilities.drawingAllowed = true;
+		Utilities.drawOrErase(event);
+	}
+
+	/*
+	 * Handle the event on the whiteboard when the mouse is not
+	 * pressed on the whiteboard
+	 * @param event an event detailing the state of the webpage
+	 * when the users move their mouse away from the whiteboard
+	 */
+	static mouseUpWhiteboard(event)
+	{
+		Utilities.drawingAllowed = false;
+		document.querySelector("#whiteboard").getContext("2d").beginPath();
 	}
 	
 	/*
@@ -136,13 +152,13 @@ class Utilities
 
 /*
  * A function for registering event listeners for all buttons
- * and initializing whatever the webpage needs.
+ * and initializing whatever the webpage needs
  */
 function main()
 {
 	// Add listeners to change the color of the icons to the one in the
 	// color panel when users move to them
-	document.querySelectorAll(".input-button, #reset").forEach((element) => {
+	document.querySelectorAll(".input-button").forEach((element) => {
 		element.addEventListener("mouseover", Utilities.changeColor);
 		element.addEventListener("mouseleave", Utilities.revertColor);
 	});
@@ -151,7 +167,7 @@ function main()
 	// pen/eraser button
 	document.querySelectorAll("#pen, #eraser")
 			.forEach((inputButton) => inputButton.addEventListener(
-				"click", Utilities.changeInputState));
+				"click", Utilities.changeCursor));
 
 	// Add a listener so that the grid can be displayed when the option is clicked
 	document.querySelector("#grid").addEventListener("click", Utilities.displayGrid);
@@ -162,8 +178,8 @@ function main()
 	
 	// Add listeners to react to the users when they click on the whiteboard
 	let whiteboard = document.querySelector("#whiteboard");
-	whiteboard.addEventListener("mouseup", Utilities.drawOrErase);
-	whiteboard.addEventListener("mousedown", Utilities.drawOrErase);
+	whiteboard.addEventListener("mouseup", Utilities.mouseUpWhiteboard);
+	whiteboard.addEventListener("mousedown", Utilities.mouseDownWhiteboard);
 	whiteboard.addEventListener("mousemove", Utilities.drawOrErase);
 	
 	// Change the cursor style on the whiteboard
@@ -176,5 +192,5 @@ function main()
 
 
 
-// Make sure that the browser will execute main() when the webpage loads.
+// Make sure that the browser will execute main() when the webpage loads
 window.onload = main;

@@ -36,6 +36,13 @@ body
 	background: none;
 	height: 3.5em;
 	width: 3.5em;
+	transform: scale(1);
+}
+
+.input-button:hover
+{
+	transition: all 0.3s;
+	transform: scale(1.1);
 }
 
 #color-picker
@@ -57,6 +64,12 @@ body
 	width: 5em;
 	background: none;
 	font-size: 0.8em;
+}
+
+.reset-button:hover
+{
+	transition: all 0.3s;
+	transform: scale(1.1);
 }
 
 #whiteboard

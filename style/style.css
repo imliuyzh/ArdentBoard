@@ -37,11 +37,11 @@ body
 	height: 3.5em;
 	width: 3.5em;
 	transform: scale(1);
+	transition: all 0.3s;
 }
 
 .input-button:hover, .reset-button:hover
 {
-	transition: all 0.3s;
 	transform: scale(1.1);
 }
 
@@ -64,6 +64,7 @@ body
 	width: 5em;
 	background: none;
 	font-size: 0.8em;
+	transition: all 0.3s;
 }
 
 #whiteboard

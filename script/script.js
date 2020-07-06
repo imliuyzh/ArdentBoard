@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * A class for all the operations used in this web application
  * 

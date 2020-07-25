@@ -1,5 +1,5 @@
 # ArdentBoard
-This project implements a whiteboard with optional grids in pure HTML, CSS, and JavaScript. It is also the first of the four milestone for Ardent Academy's internship.
+A simple whiteboard with grids written in just HTML, CSS, and JavaScript. This is a great tool for occasional brainstorming/explanation process. It is also the first of the four milestones for Ardent Academy's internship.
 <br>
 https://imliuyzh.github.io/ArdentBoard/
 
